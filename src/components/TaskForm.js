@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class TaskForm extends Component {
   render() {
     return (
-        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div>
         <div className="panel panel-warning">
             <div className="panel-heading">
                     <h3 className="panel-title">
@@ -16,13 +16,13 @@ class TaskForm extends Component {
                     <div className="panel-body">
                         <form>
                             <div className="form-group">
-                                <label>Name :</label>
+                                <label>Name </label>
                                 <input
                                  type="text"
                                   className="form-control"
                                    name="name" />
                                 </div>
-                                <label>Status :</label>
+                                <label>Status </label>
                                 <select
                                  className="form-control" 
                                  name="status"
