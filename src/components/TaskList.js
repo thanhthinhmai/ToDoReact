@@ -4,6 +4,10 @@ import TaskItem from './TaskItem';
 class TaskList extends Component {
 
     render() {
+        var { tasks } = this.props;
+        var elmTasks = tasks.map((tasks, index)=>{
+            return <TaskItem key={tasks.id} index={index} task={tasks}/>
+        })
         return (
             <div className="row mt-15">
                     <table className="table table-bordered table-hover">
@@ -30,15 +34,14 @@ class TaskList extends Component {
                                         className="form-control"
                                         name="filterStatus"
                                     >
-                                        <option>All</option>
-                                        <option>Hidden</option>
-                                        <option>Active</option>
-                                    </select>
+                                        <option value={1}>All</option>
+                                        <option value={0}>Hidden</option>
+                                        <option value={1}>Active</option>
+                                    </select>                                  
                                 </td>
-                                <td>
-                                    <TaskItem />
-                                </td>
+                             <td></td>
                             </tr>
+                            {elmTasks}
                         </tbody>
                     </table>
              </div>
