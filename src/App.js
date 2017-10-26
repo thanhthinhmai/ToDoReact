@@ -10,7 +10,8 @@ class App extends Component {
     super(props)
     this.state = {
       tasks : [],
-      isDisplayForm: false
+      isDisplayForm: false,
+      taskEditing: null
     }
     
   }
@@ -22,27 +23,6 @@ class App extends Component {
         })
     }
   }
-  onGenerate = () =>{
-   let tasks = [
-      {
-        id:this.generateID(),
-        name: 'ToDo1',
-        status: true
-      },
-      {
-        id:this.generateID(),
-        name: 'ToDo2',
-        status: false
-      },
-      {
-        id:this.generateID(),
-        name: 'ToDo3',
-        status: true
-      }
-    ]
-   
-   localStorage.setItem('tasks', JSON.stringify(tasks))
-  } 
   s4(){
     return Math.floor((1 + Math.random())* 0x10000).toString(16).substring(1);
   }
@@ -56,9 +36,54 @@ class App extends Component {
     })
     
   }
+  onSubmit = (data) =>{
+    let { tasks,  } = this.state;
+      data.id = this.generateID()
+      tasks.push(data);
+      this.setState({
+        tasks: tasks
+      })
+     localStorage.setItem('tasks', JSON.stringify(tasks))
+  }
+  
+  onUpdateStatusApp = (id)=>{
+    let { tasks } = this.state;    
+    let index = this.findIndex(id);
+    if(index !== -1){
+      tasks[index].status = !tasks[index].status;
+      this.setState({
+        tasks : tasks
+      })
+    }
+    localStorage.setItem('tasks',JSON.stringify(tasks))
+  }
+  findIndex = (id) =>{
+    let { tasks } = this.state;
+    let result = -1
+    tasks.forEach((task, index)=>{    
+      if(task.id === id){ 
+        result = index;
+      }
+    })
+    return result;  
+  }
+
+  onDelete = (id) =>{
+    let { tasks } =this.state;
+    let index = this.findIndex(id);
+    if(index !== -1){
+      tasks.splice(index, 1);
+      this.setState({
+        tasks : tasks
+      })
+    }
+    localStorage.setItem('tasks',JSON.stringify(tasks))
+    
+  }
   render() {
     var { tasks,isDisplayForm } = this.state;
-    var elmTaskForm = isDisplayForm === true ? <TaskForm /> : '';
+    var elmTaskForm = isDisplayForm === true ? 
+    <TaskForm onSubmit1={this.onSubmit}/> : '';
     return (
       <div className="container">
           <div className="text-center">
@@ -73,13 +98,13 @@ class App extends Component {
         className="btn btn-primary" 
          onClick={this.onToggleForm}
          >Add To Do</button>
-         <button type="button" 
-         className="btn btn-danger ml-5"
-         onClick = {this.onGenerate}
-         >List To Do</button>
+        
         <Control />
 
-        <TaskList tasks={ tasks }/>
+        <TaskList 
+        onUpdateStatusList = {this.onUpdateStatusApp}
+        onDelete = { this.onDelete }
+        tasks={ tasks }/>
         </div>
         </div>  
       </div>

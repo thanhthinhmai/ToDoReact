@@ -2,11 +2,22 @@ import React, { Component } from 'react';
 import TaskItem from './TaskItem';
 
 class TaskList extends Component {
-
+    
+    onUpdateStatus =()=>{
+        this.props.onUpdateStatus(this.props)
+     }
+     
+     
     render() {
-        var { tasks } = this.props;
-        var elmTasks = tasks.map((tasks, index)=>{
-            return <TaskItem key={tasks.id} index={index} task={tasks}/>
+        let { tasks } = this.props;
+        let elmTasks = tasks.map((tasks, index)=>{
+            return <TaskItem 
+            key={tasks.id}
+            index={index}
+            task={tasks}
+            onUpdateStatusItem = { this.props.onUpdateStatusList }
+            onDelete = { this.props.onDelete }
+            />
         })
         return (
             <div className="row mt-15">
